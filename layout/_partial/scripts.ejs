@@ -85,7 +85,7 @@
     IdentityPoolId: '<%= page.identityPoolId %>',
   });
 
-  function sendResume() {
+  function sendResume(event) {
     var formValues = {};
     
     var email = document.getElementById("email").value;
@@ -104,7 +104,7 @@
 
     formValues.doctype = doctype;
 
-    var lambdaRequest = new AWS.Lambda(<%= page.lambdaOptions %>);
+    var lambdaRequest = new AWS.Lambda({ region: '<%= page.lambdaRegion %>' });
 
     var requestParams = {
       FunctionName: 'jcb-send-resume',
@@ -114,12 +114,21 @@
     };
 
     var requestResults;
+    var result = document.getElementById("result");
+    event.preventDefault()
+    result.innerHTML = "Do not click twice! Processing...";
 
     lambdaRequest.invoke(requestParams, function(error, data) {
       if (error) {
-        prompt(error);
+        result.innerHTML = error;
       } else {
         requestResults = JSON.parse(data.Payload);
+        event.preventDefault()
+        if (requestResults.success) {
+          result.innerHTML = "Email sent.";
+        } else {
+          result.innerHTML = "Something wrong happened.";
+        }
       }
     });
 
