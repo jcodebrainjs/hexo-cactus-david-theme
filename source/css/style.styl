@@ -38,21 +38,30 @@ body
 fieldset 
   border: none
 
-.label-content {
+.label-content 
   margin-top: 5px
   border-top: 1px solid black
-}
 
-input[type=email] {     
-  width: 100%;
-}
+input[type=email]      
+  width: 100%
 
-#result {
-  background-color: #FF9999
+#result 
   padding: 10px
   border: 1px solid black
   margin: 10px
-}
+  display: none
+    
+  &.display
+    display: block
+    
+    &.processing
+      background-color: #9999FF
+
+    &.sent
+      background-color: #99FF99
+
+    &.error
+      background-color: #FF9999
 
 .content
   position: relative

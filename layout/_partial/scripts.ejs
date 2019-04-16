@@ -86,6 +86,11 @@
   });
 
   function sendResume(event) {
+    event.preventDefault();
+    var result = document.getElementById("result");
+    if (result.class === "display processing") {
+      return false;
+    }
     var formValues = {};
     
     var email = document.getElementById("email").value;
@@ -114,8 +119,7 @@
     };
 
     var requestResults;
-    var result = document.getElementById("result");
-    event.preventDefault()
+    result.class = "display processing";
     result.innerHTML = "Do not click twice! Processing...";
 
     lambdaRequest.invoke(requestParams, function(error, data) {
@@ -123,10 +127,11 @@
         result.innerHTML = error;
       } else {
         requestResults = JSON.parse(data.Payload);
-        event.preventDefault()
         if (requestResults.success) {
+          result.class = "display sent";
           result.innerHTML = "Email sent.";
         } else {
+          result.class = "display error";
           result.innerHTML = "Something wrong happened.";
         }
       }
