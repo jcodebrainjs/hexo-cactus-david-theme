@@ -88,7 +88,7 @@
   function sendResume(event) {
     event.preventDefault();
     var result = document.getElementById("result");
-    if (result.class === "display processing") {
+    if (result.className === "display processing") {
       return false;
     }
     var formValues = {};
@@ -119,19 +119,20 @@
     };
 
     var requestResults;
-    result.class = "display processing";
+    result.className = "display processing";
     result.innerHTML = "Do not click twice! Processing...";
 
     lambdaRequest.invoke(requestParams, function(error, data) {
       if (error) {
+        result.className = "display error";
         result.innerHTML = error;
       } else {
         requestResults = JSON.parse(data.Payload);
         if (requestResults.success) {
-          result.class = "display sent";
+          result.className = "display sent";
           result.innerHTML = "Email sent.";
         } else {
-          result.class = "display error";
+          result.className = "display error";
           result.innerHTML = "Something wrong happened.";
         }
       }
